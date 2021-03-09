@@ -1,20 +1,20 @@
 const {google, GoogleApis} = require('googleapis');
-const fs = require('fs');
-const readline = require('readline');
 const express = require('express');
 const SCOPES = ['https://www.googleapis.com/auth/calendar']
 const keys = require('../keys/creds.json');
 const { calendar } = require('googleapis/build/src/apis/calendar');
+const kalendar = google.calendar('v3')
 const ID = keys.CLIENT_ID;//stored in json
 const SECRET = keys.CLIENT_SECRET;//stored in json
 const REFRESH = keys.REFRESH_TOKEN;//stored in json
 const REDIRECT = keys.REDIRECT_URI;//stored in json
+const KEY = keys.API_KEY;//stored in json
 const oAuth2Client = new google.auth.OAuth2(ID,SECRET,REDIRECT);
 oAuth2Client.setCredentials({refresh_token:REFRESH});
 async function EstabConnection(){
     try{
     const accessToken = await oAuth2Client.getAccessToken();
-    const calendar = google.calendar({version :'v3', auth});
+    const calendar = GoogleApis.calendar({version :'v3', auth});
     calendar.events.list({
         calendarId:'primary',
         timeMin:(new Date().toIsoString()),
@@ -32,7 +32,7 @@ async function EstabConnection(){
             })
         }
         else{
-            console.log('No upcoming events found')
+            console.log('No upcoming events found');
         }
     })
     }
