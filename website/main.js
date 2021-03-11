@@ -2,7 +2,7 @@
 //Project: Create a website and javascript(in nodeJS) to connect to google calendar for display, creation, and deletion of events
 const {google, GoogleApis} = require('googleapis');
 const express = require('express');
-const SCOPES = ['https://www.googleapis.com/auth/calendar']
+const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 const keys = require('../keys/creds.json');
 const { calendar } = require('googleapis/build/src/apis/calendar');
 const ID = keys.CLIENT_ID;//stored in json
@@ -45,6 +45,7 @@ async function EventList(auth){
 //Creates a new event            
 async function CreateEvent(auth){
     try{const accessToken = await oAuth2Client.getAccessToken();
+      
         const Calendar = google.calendar({version:'v3', auth});
         Calendar.events.insert({
             calendarId:'cbrown199@west-mec.org',
@@ -52,13 +53,12 @@ async function CreateEvent(auth){
             resource: Event
         },function(err, event){
             if(err){console.log(err)};
-            console.log(`Event created: ${event}`)
+            console.log(`Event created: ${event}`);
         })
-    
     }
     catch(error){return error;}}
 //------------------------------------------------------------------------------------------------------------------------------------------
-//Deletes and event
+//Deletes an event
 async function DeleteEvent(auth){
   try{const accessToken = await oAuth2Client.getAccessToken
       const Calendar = google.calendar({version:'v3', auth});
@@ -69,8 +69,15 @@ async function DeleteEvent(auth){
   }
   catch(error){return error;}}
 //------------------------------------------------------------------------------------------------------------------------------------------
-CreateEvent(oAuth2Client)
-EventList(oAuth2Client)
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+// CreateEvent(oAuth2Client);
+  EventList(oAuth2Client);
+//------------------------------------------------------------------------------------------------------------------------------------------
+//Export Center
+exports.EventList = EventList;
+exports.CreateEvent = CreateEvent;
+exports.oAuth2Client = oAuth2Client;
 //------------------------------------------------------------------------------------------------------------------------------------------
 /*Note book
 function skeleton:

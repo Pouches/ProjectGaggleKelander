@@ -1,9 +1,67 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Supa Dupa</title>
+        <title>Cade's Custom Calendar</title>
+        <!-- <link rel="stylesheet" href="CSS/good_style.css"> -->
+        <style>
+            html{
+                background-color: darkslategrey;
+                }
+            #newEventSection{
+                border:solid 3px white;
+                width:30%;
+                position :absolute;
+                height:50%;
+                padding:0.5%;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+            }
+            input{
+                margin-bottom:3%;
+            }
+            #newEventTitle{
+                width:95%;
+                margin-left:2.0%;
+            }
+            #newEventStart{
+                margin-left:5%;
+                margin-right: 5%;
+                width:25%;
+            }
+            #newEventEnd{
+                width:25%;
+            }
+            #newEventDate{
+                width:25%;
+                margin-left:5%;
+            }
+            #newEventChronos{
+                align-content: center;
+            }
+            #timeline{
+                width:65%;
+                position:absolute;
+                height: 95%;
+                border:solid 3px white;
+                right:1%;
+            }
+        </style>
     </head>
     <body>
-
+        <div id="newEventSection">
+            <input type='text' id='newEventTitle' placeholder="Event Title">
+            </br>
+            <span id='newEventChronos'>
+            <input type="date" id='newEventDate'>
+            <input type="time" id='newEventStart'>
+            <input type="time" id='newEventEnd'>
+            </span>
+            </br>
+            
+        </div>
+        <div id='timeline'>
+        <button onclick="Submit()">asd asd</btton>
+        </div>
     </body>
+    <!-- <script src="main.js"></script> -->
+    <script src="website.js"></script>
 </html>
