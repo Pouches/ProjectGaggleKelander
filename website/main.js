@@ -5,6 +5,13 @@ const express = require('express');
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 const keys = require('../keys/creds.json');
 const { calendar } = require('googleapis/build/src/apis/calendar');
+const {JSDOM} = require('jsdom');
+const dom = new JSDOM(``,{
+  url: "localhost:3000",
+  referrer: "localhost:3000",
+  contentType: "text/html",
+  includeNodeLocations: true,
+  storageQuota: 10000000});
 const ID = keys.CLIENT_ID;//stored in json
 const SECRET = keys.CLIENT_SECRET;//stored in json
 const REFRESH = keys.REFRESH_TOKEN;//stored in json
@@ -12,9 +19,9 @@ const REDIRECT = keys.REDIRECT_URI;//stored in json
 const KEY = keys.API_KEY;//stored in json
 const oAuth2Client = new google.auth.OAuth2(ID,SECRET,REDIRECT);
 oAuth2Client.setCredentials({refresh_token:REFRESH});
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Lists next 10 upcoming events
-async function EventList(auth){
+async function EventList(auth, prettyPrint){
     try{const accessToken = await oAuth2Client.getAccessToken();
         const Calendar = google.calendar({version:'v3', auth});
         Calendar.events.list({
@@ -41,11 +48,22 @@ async function EventList(auth){
                 }
                 else{console.log('No upcoming events found')}});}
             catch(error){return error;}}
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Creates a new event            
-async function CreateEvent(auth){
+async function CreateEvent(auth,EventSummary,EventLocation,EventDescription,EventDate,StartTime,EndTime){
     try{const accessToken = await oAuth2Client.getAccessToken();
-      
+      //Variables that are connected to the website
+      var Event = {
+        'summary': `${EventSummary}`,
+        'location': `${EventLocation}`,
+        'description': `${EventDescription}`,
+        'start': {
+          'dateTime':`${EventDate}T${StartTime}:00-${EndTime}:00`,
+          'timeZone': 'America/Phoenix'},
+        'end':{
+          'dateTime':`${EventDate}T${StartTime}:00-${EndTime}:00`,
+          'timeZone':'America/Phoenix'}
+      }
         const Calendar = google.calendar({version:'v3', auth});
         Calendar.events.insert({
             calendarId:'cbrown199@west-mec.org',
@@ -57,7 +75,7 @@ async function CreateEvent(auth){
         })
     }
     catch(error){return error;}}
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Deletes an event
 async function DeleteEvent(auth){
   try{const accessToken = await oAuth2Client.getAccessToken
@@ -68,17 +86,17 @@ async function DeleteEvent(auth){
       })
   }
   catch(error){return error;}}
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // CreateEvent(oAuth2Client);
   EventList(oAuth2Client);
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Export Center
 exports.EventList = EventList;
 exports.CreateEvent = CreateEvent;
 exports.oAuth2Client = oAuth2Client;
-//------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*Note book
 function skeleton:
 

@@ -2,8 +2,8 @@
 <html>
     <head>
         <title>Cade's Custom Calendar</title>
-        <!-- <link rel="stylesheet" href="CSS/good_style.css"> -->
-        <style>
+        <link rel="stylesheet" href="CSS/good_style.css">
+        <!-- <style>
             html{
                 background-color: darkslategrey;
                 }
@@ -44,24 +44,26 @@
                 border:solid 3px white;
                 right:1%;
             }
-        </style>
+        </style> -->
     </head>
     <body>
-        <div id="newEventSection">
-            <input type='text' id='newEventTitle' placeholder="Event Title">
-            </br>
-            <span id='newEventChronos'>
-            <input type="date" id='newEventDate'>
-            <input type="time" id='newEventStart'>
-            <input type="time" id='newEventEnd'>
-            </span>
-            </br>
-            
-        </div>
+        <div>
+            <form id="newEventSection" method="POST" action='NEV.php'>
+                <input type='text' id='newEventTitle' placeholder="Event Title">
+                </br>
+                <span id='newEventChronos'>
+                <input type="date" id='newEventDate'>
+                <input type="time" id='newEventStart'>
+                <input type="time" id='newEventEnd'>
+                </span>
+                </br>
+                <textarea id='newEventDescription' rows='6'cols='58'></textarea>
+                </br>
+                <button onclick="on_submit()">Create</btton>            
+            </form></div>
         <div id='timeline'>
-        <button onclick="Submit()">asd asd</btton>
         </div>
     </body>
     <!-- <script src="main.js"></script> -->
-    <script src="website.js"></script>
+    <script src="script/website.js"></script>
 </html>

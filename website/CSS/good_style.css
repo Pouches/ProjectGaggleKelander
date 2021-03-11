@@ -1,4 +1,40 @@
 html{
     background-color: darkslategrey;
-    color:magenta;
+    }
+#newEventSection{
+    border:solid 3px white;
+    width:30%;
+    position :absolute;
+    height:50%;
+    padding:0.5%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+}
+input{
+    margin-bottom:3%;
+}
+#newEventTitle{
+    width:95%;
+    margin-left:2.0%;
+}
+#newEventStart{
+    margin-left:5%;
+    margin-right: 5%;
+    width:25%;
+}
+#newEventEnd{
+    width:25%;
+}
+#newEventDate{
+    width:25%;
+    margin-left:5%;
+}
+#newEventChronos{
+    align-content: center;
+}
+#timeline{
+    width:65%;
+    position:absolute;
+    height: 95%;
+    border:solid 3px white;
+    right:1%;
 }
