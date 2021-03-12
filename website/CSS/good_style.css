@@ -1,40 +1,95 @@
+/* Fonts */
+@font-face{
+    font-family: 'borda';
+    src:url('./fonts/borda_medium.ttf');
+}
+/* ------------------------------------------------------------------------------------------------------------------------------- */
 html{
-    background-color: darkslategrey;
+    background-color: black;
     }
 #newEventSection{
-    border:solid 3px white;
+    border:solid 3px rgb(255, 102, 0);
     width:30%;
     position :absolute;
     height:50%;
     padding:0.5%;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
+    font-family: 'borda';
 }
 input{
     margin-bottom:3%;
+    font-family: 'borda';
 }
 #newEventTitle{
     width:95%;
+    font-family: 'borda';
     margin-left:2.0%;
+    background-color:rgba(47, 47, 47, 0.3);
+    border:solid 3px rgb(255, 102, 0);
+    color:whitesmoke;
 }
 #newEventStart{
     margin-left:5%;
     margin-right: 5%;
     width:25%;
+    font-family: 'borda';
+    background-color:rgba(47, 47, 47, 0.3);
+    border:solid 3px rgb(255, 102, 0);
+    color:whitesmoke;
 }
 #newEventEnd{
     width:25%;
+    font-family: 'borda';
+    background-color:rgba(47, 47, 47, 0.3);
+    border:solid 3px rgb(255, 102, 0);
+    color:whitesmoke;
 }
 #newEventDate{
     width:25%;
     margin-left:5%;
+    font-family: 'borda';
+    background-color:rgba(47, 47, 47, 0.3);
+    border:solid 3px rgb(255, 102, 0);
+    color:whitesmoke;  
 }
 #newEventChronos{
     align-content: center;
+    font-family: 'borda';
+    
 }
 #timeline{
     width:65%;
     position:absolute;
     height: 95%;
-    border:solid 3px white;
+    border:solid 3px rgb(255, 102, 0);
     right:1%;
+    font-family: 'borda';
+    background-color:rgba(47, 47, 47, 0.3);
+
+}
+#newEventLocation{
+    width:95%;
+    font-family: 'borda';
+    margin-left:2.0%;
+    background-color:rgba(47, 47, 47, 0.3);
+    border:solid 3px rgb(255, 102, 0);
+    color:whitesmoke;
+}
+button{
+    font-family: 'borda';
+    border: 2px rgb(255, 102, 0) solid;
+    background-color:transparent;
+    color:white;
+}
+textarea{
+    resize: none;
+    background-color:rgba(47, 47, 47, 0.3);
+    color:whitesmoke;
+    border:solid 3px rgb(255, 102, 0);
+
+}
+#logo{
+    position:absolute;
+    bottom: 0%;
+    width:25%;
+    left:3%;
 }

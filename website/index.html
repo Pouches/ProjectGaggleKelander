@@ -48,21 +48,23 @@
     </head>
     <body>
         <div>
-            <form id="newEventSection" method="POST" action='NEV.php'>
-                <input type='text' id='newEventTitle' placeholder="Event Title">
+            <form id="newEventSection" method="POST" action="/create_event">
+                <input type='text' id='newEventTitle' placeholder="Event Title" name="newEventTitle">
                 </br>
                 <span id='newEventChronos'>
-                <input type="date" id='newEventDate'>
-                <input type="time" id='newEventStart'>
-                <input type="time" id='newEventEnd'>
+                <input type="date" id='newEventDate' name="newEventDate">
+                <input type="time" id='newEventStart' name="newEventStart">
+                <input type="time" id='newEventEnd' name="newEventEnd">
                 </span>
                 </br>
-                <textarea id='newEventDescription' rows='6'cols='58'></textarea>
+                <textarea id='newEventDescription' rows='8'cols='58'name="newEventDEscription"></textarea>
                 </br>
+                <input type="text" id='newEventLocation' name='newEventLocation' placeholder='Location'>
                 <button onclick="on_submit()">Create</btton>            
             </form></div>
         <div id='timeline'>
         </div>
+        <img src="images/TCTD2_Icon_Phoenix_Secondary_Orange_208x208.png" id="logo">
     </body>
     <!-- <script src="main.js"></script> -->
     <script src="script/website.js"></script>
