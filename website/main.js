@@ -21,7 +21,7 @@ const oAuth2Client = new google.auth.OAuth2(ID,SECRET,REDIRECT);
 oAuth2Client.setCredentials({refresh_token:REFRESH});
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Lists next 10 upcoming events
-async function EventList(auth, prettyPrint){
+async function EventList(auth){
     try{const accessToken = await oAuth2Client.getAccessToken();
         const Calendar = google.calendar({version:'v3', auth});
         Calendar.events.list({
