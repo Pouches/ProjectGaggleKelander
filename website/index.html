@@ -3,70 +3,87 @@
     <head>
         <title>Cade's Custom Calendar</title>
         <link rel="stylesheet" href="CSS/good_style.css">
-        <!-- <style>
-            html{
-                background-color: darkslategrey;
-                }
-            #newEventSection{
-                border:solid 3px white;
-                width:30%;
-                position :absolute;
-                height:50%;
-                padding:0.5%;
-                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', 'sans-serif';
-            }
-            input{
-                margin-bottom:3%;
-            }
-            #newEventTitle{
-                width:95%;
-                margin-left:2.0%;
-            }
-            #newEventStart{
-                margin-left:5%;
-                margin-right: 5%;
-                width:25%;
-            }
-            #newEventEnd{
-                width:25%;
-            }
-            #newEventDate{
-                width:25%;
-                margin-left:5%;
-            }
-            #newEventChronos{
-                align-content: center;
-            }
-            #timeline{
-                width:65%;
-                position:absolute;
-                height: 95%;
-                border:solid 3px white;
-                right:1%;
-            }
-        </style> -->
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="website.js"></script>
+        <script>
+            let eventInfo =[];
+         $(document).ready(function(){
+             $.getJSON("events.json",function(data){
+                 eventInfo = data;
+                 if(eventInfo.events.length==1){
+                    document.getElementsByTagName("tbody")[0].innerHTML = `<tr> <td>${eventInfo.events[0].summary}</td> <td>${eventInfo.events[0].date}</td> <td>${eventInfo.events[0].start}</td> <td>${eventInfo.events[0].end}</td> <td>${eventInfo.events[0].location}</td></tr>`;
+                 }
+                 else {
+                    let i2=0;
+                    eventInfo.events.forEach(element => {
+                        
+                        
+                            let tr = document.createElement("tr");
+                            document.getElementsByTagName("tbody")[0].append(tr);
+                            let SumText = document.createTextNode(`${eventInfo.events[i2].summary}`);
+                            let DateText = document.createTextNode(`${eventInfo.events[i2].date}`);
+                            let StartText = document.createTextNode(`${eventInfo.events[i2].start}`);
+                            let EndText = document.createTextNode(`${eventInfo.events[i2].end}`);
+                            let LocationText = document.createTextNode(`${eventInfo.events[i2].location}`);
+                            let tempSummary = document.createElement("td");
+                            let tempDate = document.createElement("td");
+                            let tempStart = document.createElement("td");
+                            let tempEnd = document.createElement("td");
+                            let tempLocation = document.createElement("td");
+                            tempSummary.appendChild(SumText);
+                            tempDate.appendChild(DateText);
+                            tempStart.append(StartText);
+                            tempEnd.appendChild(EndText);
+                            tempLocation.appendChild(LocationText);
+                            document.getElementsByTagName('tr')[i2+1].appendChild(tempSummary);
+                            document.getElementsByTagName('tr')[i2+1].appendChild(tempDate);
+                            document.getElementsByTagName('tr')[i2+1].appendChild(tempStart);
+                            document.getElementsByTagName('tr')[i2+1].appendChild(tempEnd);
+                            document.getElementsByTagName('tr')[i2+1].appendChild(tempLocation);
+                            i2++;
+                        
+                    })
+                 }
+             }).fail(function(){
+                 console.log("an error has occured");
+             });
+         })
+         </script>
     </head>
-    <body>
+    <body onload="loadJSON()">
         <div>
             <form id="newEventSection" method="POST" action="/create_event">
-                <input type='text' id='newEventTitle' placeholder="Event Title" name="newEventTitle">
+                <input type='text' id='newEventTitle' placeholder="Event Title" name="newEventTitle"required>
                 </br>
                 <span id='newEventChronos'>
-                <input type="date" id='newEventDate' name="newEventDate">
-                <input type="time" id='newEventStart' name="newEventStart">
-                <input type="time" id='newEventEnd' name="newEventEnd">
+                <input type="date" id='newEventDate' name="newEventDate"required>
+                <input type="time" id='newEventStart' name="newEventStart"required>
+                <input type="time" id='newEventEnd' name="newEventEnd" required>
                 </span>
                 </br>
-                <textarea id='newEventDescription' rows='8'cols='58'name="newEventDEscription"></textarea>
+                <textarea id='newEventDescription' rows='8'cols='58'name="newEventDescription"required></textarea>
                 </br>
-                <input type="text" id='newEventLocation' name='newEventLocation' placeholder='Location'>
-                <button onclick="on_submit()">Create</btton>            
+                <input type="text" id='newEventLocation' name='newEventLocation' placeholder='Location'required>
+                <button type='submit'>Create</button>            
             </form></div>
         <div id='timeline'>
+            <table>
+                <thead>
+                    <th>Title</th>
+                    <th>Date</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Location</th>
+                </thead>
+                <tbody id="TimelineBody">
+                
+                
+                </tbody>
+            </table>
             
-        </div>
+            </div>
         <img src="images/TCTD2_Icon_Phoenix_Secondary_Orange_208x208.png" id="logo">
+        
     </body>
     <!-- <script src="main.js"></script> -->
-    <script src="script/website.js"></script>
-</html>
+</html> 

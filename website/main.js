@@ -1,17 +1,18 @@
 //Created By Cade Brown, on 03/07/2021 at 1:04pm    
 //Project: Create a website and javascript(in nodeJS) to connect to google calendar for display, creation, and deletion of events
 const {google, GoogleApis} = require('googleapis');
-const express = require('express');
 const SCOPES = ['https://www.googleapis.com/auth/calendar'];
 const keys = require('../keys/creds.json');
 const { calendar } = require('googleapis/build/src/apis/calendar');
-const {JSDOM} = require('jsdom');
-const dom = new JSDOM(``,{
-  url: "localhost:3000",
-  referrer: "localhost:3000",
-  contentType: "text/html",
-  includeNodeLocations: true,
-  storageQuota: 10000000});
+const fs=require('fs');
+const { isBuffer } = require('util');
+// const {JSDOM} = require('jsdom');
+// const dom = new JSDOM(``,{
+//   url: "localhost:3000",
+//   referrer: "localhost:3000",
+//   contentType: "text/html",
+//   includeNodeLocations: true,
+//   storageQuota: 10000000});
 const ID = keys.CLIENT_ID;//stored in json
 const SECRET = keys.CLIENT_SECRET;//stored in json
 const REFRESH = keys.REFRESH_TOKEN;//stored in json
@@ -21,9 +22,23 @@ const oAuth2Client = new google.auth.OAuth2(ID,SECRET,REDIRECT);
 oAuth2Client.setCredentials({refresh_token:REFRESH});
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Lists next 10 upcoming events
-async function EventList(auth){
-    try{const accessToken = await oAuth2Client.getAccessToken();
+function EventList(auth){
+  let events2=[];
+  console.log(`running event list\n`);
+  fs.writeFileSync(`${__dirname}/events.json`,'',(err)=>{
+    if(err){return err}
+  })
+  let eventAmount =0;
+    let StoredEventTitle =[];
+    let StoredEventDescription =[];
+    let StoredEventDate = [];
+    let StoredEventStart=[];
+    let StoredEventEnd=[];
+    let StoredEventLocation = [];
+    let StoredEventId=[];
+    try{const accessToken = oAuth2Client.getAccessToken();
         const Calendar = google.calendar({version:'v3', auth});
+        let TimeCardTemplate = [];
         Calendar.events.list({
           calendarId:'cbrown199@west-mec.org',
           timeMin:(new Date()).toISOString(),
@@ -31,23 +46,73 @@ async function EventList(auth){
           singleEvents:true,
           orderBy:'startTime',
           key:KEY,
-        },(err,res)=>{
+        },(err,res2)=>{
                 if(err)return console.log('The API returned an error:'+ err);
-                const events = res.data.items;
+                const events = res2.data.items;
                 if(events.length){
                     if(events.length==1){console.log('Upcoming event:');
                     events.map((event, i)=>{
                         const start = event.start.dateTime||event.start.date;
                         console.log(`${start}-${event.summary}`);
-                    });}
+                        console.log(`Event Location:${event.location}`);
+                        console.log(`Event Summary:${event.summary}`);
+                        console.log(`Event Description:${event.description}`);
+                        console.log(`Event Date/time${event.start.dateTime}`);
+                        console.log(`Event ID${event.id}\n------------------------------------------------------`);
+                        StoredEventTitle.push(event.summary);
+                        StoredEventDescription.push(event.description);
+                        StoredEventDate.push(event.start.dateTime.slice(0,10)); 
+                        StoredEventLocation.push(event.location);
+                        StoredEventId.push(event.id);
+                        StoredEventStart.push(event.start.dateTime.slice(11,18));
+                        StoredEventEnd.push(event.start.dateTime.slice(20,25));
+                        eventAmount++;
+                        console.log(eventAmount);
+                      });}
                     else if(events.length >=1){console.log('Upcoming '+events.length+' events:');
                     events.map((event, i)=>{
                         const start = event.start.dateTime||event.start.date;
                         console.log(`${start}-${event.summary}`);
-                    });}
-                }
+                        console.log(`Event Location:${event.location}`);
+                        console.log(`Event Summary:${event.summary}`);
+                        console.log(`Event Description:${event.description}`);
+                        console.log(`Event Date/time${event.start.dateTime}`);
+                        console.log(`Event ID${event.id}\n------------------------------------------------------`);
+                        console.log(event.start.dateTime)
+                        StoredEventTitle.push(event.summary);
+                        StoredEventDescription.push(event.description);
+                        StoredEventDate.push(event.start.dateTime.slice(0,10)); 
+                        StoredEventLocation.push(event.location);
+                        StoredEventId.push(event.id);
+                        StoredEventStart.push(event.start.dateTime.slice(11,19));
+                        StoredEventEnd.push(event.start.dateTime.slice(20,25));
+                        eventAmount++;
+                        console.log(eventAmount);
+
+                      });}
+                      for(let i=0; i<=eventAmount-1;i++){
+                        if(eventAmount!=1){
+                          if(i==0){
+                            fs.appendFileSync(`${__dirname}/events.json`,(`{\n"events":[\n{"summary":"${StoredEventTitle[i]}",\n"date":"${StoredEventDate[i]}",\n"start":"${StoredEventStart  [i]}",\n"end":"${StoredEventEnd[i]}",\n"location":"${StoredEventLocation[i]}"\n},\n`),(err)=>{if(err){return error}})
+                          }
+                          else if(i!=eventAmount-1&&i!=0){
+                            fs.appendFileSync(`${__dirname}/events.json`,(`{"summary":"${StoredEventTitle[i]}",\n"date":"${StoredEventDate[i]}",\n"start":"${StoredEventStart [i]}",\n"end":"${StoredEventEnd[i]}",\n"location":"${StoredEventLocation[i]}"\n},\n`),(err)=>{if(err){return error}})
+                          }
+                          else if(i==eventAmount-1){
+                            fs.appendFileSync(`${__dirname}/events.json`,(`{"summary":"${StoredEventTitle[i]}",\n"date":"${StoredEventDate[i]}",\n"start":"${StoredEventStart [i]}",\n"end":"${StoredEventEnd[i]}",\n"location":"${StoredEventLocation[i]}"\n}\n]\n}`),(err)=>{if(err){return error}})
+                          }
+                        }
+                          else{//if there is only 1 event
+                            fs.appendFileSync(`${__dirname}/events.json`,(`{\n"events":[{"summary":"${StoredEventTitle[i]}",\n"date":"${StoredEventDate[i]}",\n"start":"${StoredEventStart [i]}",\n"end":"${StoredEventEnd[i]}",\n"location":"${StoredEventLocation[i]}"\n}\n]\n}`),(err)=>{if(err){return error}})
+                          }
+                      }
+                    }
                 else{console.log('No upcoming events found')}});}
-            catch(error){return error;}}
+            catch(error){return error;}
+            // res.send(()=>{StoredEvents.forEach(element => {
+            //   element.replace('timeline', element+"\ntimeline")
+            // });})
+}         
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Creates a new event            
 async function CreateEvent(auth,EventSummary,EventLocation,EventDescription,EventDate,StartTime,EndTime){
@@ -89,8 +154,7 @@ async function DeleteEvent(auth){
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-// CreateEvent(oAuth2Client);
-  EventList(oAuth2Client);
+// CreateEvent(oAuth2Client);EventList(oAuth2Client);
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Export Center
 exports.EventList = EventList;
@@ -161,4 +225,65 @@ async function Name(auth){
           'end':{
             'dateTime': '2021-03-10T09:00:00-16:00:00',
             'timeZone':'America/Phoenix'}};
+
+
+
+
+
+function getCalendarInfo(res, data) {
+  let output = [];
+  let pageInput = [];
+    let rowTemplete = <tr>
+    <td>Event Name</td>
+    <td>Description</td>
+    <td>Event Start Date</td>
+    <td>Event End Date</td>
+    <td>Event Location</td>
+    <td>Status</td>
+    <td>Creator</td>
+</tr>;
+  calendar.events.list({
+    calendarId: 'primary',
+    timeMin: (new Date(new Date().setHours(0,0,0))).toISOString(),
+    timeMax:(new Date(new Date().setHours(23,59,59,0))).toISOString(),
+    maxResults: 10,
+    singleEvents: true,
+    orderBy: 'startTime',
+  }, (err, sult) => {
+    if (err) throw console.log('The API returned an error: ' + err);
+    const events = sult.data.items;
+    if (events.length) {
+      events.map((event, i) => {
+        output.push(event);
+      });
+      //console.log(output);
+      output.forEach(selectedEvent => {
+        let temp = rowTemplete;
+        temp = temp.replace("Event Name", selectedEvent.summary);
+        temp = temp.replace("Description", selectedEvent.description);
+        temp = temp.replace("Event Start Date", new Date(selectedEvent.start.dateTime).toLocaleTimeString());
+        temp = temp.replace("Event End Date", new Date(selectedEvent.end.dateTime).toLocaleTimeString());
+        temp = temp.replace("Event Location", selectedEvent.location);
+        temp = temp.replace("Status", selectedEvent.status);
+        temp = temp.replace("Creator", selectedEvent.creator.email);
+        pageInput.push(temp);
+      });
+      data = data.replace(`^/^input^/^`, pageInput);
+      res.send(data);
+      return
+    } else {
+      data = data.replace(`^/^input^/^`, <tr>
+      <td>no</td>
+      <td>events</td>
+      <td>for</td>
+      <td>a</td>
+      <td>while,</td>
+      <td>good</td>
+      <td>job</td>
+  </tr>);
+      res.send(data);
+    }
+  });
+
+}
 */

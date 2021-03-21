@@ -26,6 +26,8 @@ input{
     background-color:rgba(47, 47, 47, 0.3);
     border:solid 3px rgb(255, 102, 0);
     color:whitesmoke;
+    font-size:2rem;
+
 }
 #newEventStart{
     margin-left:5%;
@@ -35,6 +37,8 @@ input{
     background-color:rgba(47, 47, 47, 0.3);
     border:solid 3px rgb(255, 102, 0);
     color:whitesmoke;
+    font-size:2rem;
+
 }
 #newEventEnd{
     width:25%;
@@ -42,6 +46,8 @@ input{
     background-color:rgba(47, 47, 47, 0.3);
     border:solid 3px rgb(255, 102, 0);
     color:whitesmoke;
+    font-size:2rem;
+
 }
 #newEventDate{
     width:25%;
@@ -49,7 +55,9 @@ input{
     font-family: 'borda';
     background-color:rgba(47, 47, 47, 0.3);
     border:solid 3px rgb(255, 102, 0);
-    color:whitesmoke;  
+    color:whitesmoke;
+    font-size:2rem;
+  
 }
 #newEventChronos{
     align-content: center;
@@ -64,6 +72,7 @@ input{
     right:1%;
     font-family: 'borda';
     background-color:rgba(47, 47, 47, 0.3);
+    
 
 }
 #newEventLocation{
@@ -73,18 +82,24 @@ input{
     background-color:rgba(47, 47, 47, 0.3);
     border:solid 3px rgb(255, 102, 0);
     color:whitesmoke;
+    font-size:2rem;
 }
 button{
     font-family: 'borda';
     border: 2px rgb(255, 102, 0) solid;
     background-color:transparent;
     color:white;
+    font-size:2rem;
+
 }
 textarea{
     resize: none;
     background-color:rgba(47, 47, 47, 0.3);
     color:whitesmoke;
     border:solid 3px rgb(255, 102, 0);
+    width:98%;
+    font-size:2rem;
+
 
 }
 #logo{
@@ -92,4 +107,34 @@ textarea{
     bottom: 0%;
     width:25%;
     left:3%;
+}
+thead{
+    border:solid white 2px;
+    color:rgb(255, 102, 0);
+    width:100%;
+}
+th{
+    border: solid white 2px;
+    width:20%;
+    text-align:center;
+    font-size:3rem
+}
+td{
+    border: solid white 2px;
+    width:20%;
+    text-align:center;
+    font-size:2rem;
+    color:rgb(255, 102, 0);
+}
+table{
+    width:100%;
+}
+#leave{
+    display: none;
+    color:transparent;
+    visibility: hidden;
+}
+iframe{
+    display: none;
+    visibility: hidden;
 }
