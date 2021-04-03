@@ -21,6 +21,15 @@ const KEY = keys.API_KEY;//stored in json
 const oAuth2Client = new google.auth.OAuth2(ID,SECRET,REDIRECT);
 oAuth2Client.setCredentials({refresh_token:REFRESH});
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+  _      _     _     ______               _       
+ | |    (_)   | |   |  ____|             | |      
+ | |     _ ___| |_  | |____   _____ _ __ | |_ ___ 
+ | |    | / __| __| |  __\ \ / / _ \ '_ \| __/ __|
+ | |____| \__ \ |_  | |___\ V /  __/ | | | |_\__ \
+ |______|_|___/\__| |______\_/ \___|_| |_|\__|___/
+*/
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Lists next 10 upcoming events
 function EventList(auth){
   let events2=[];
@@ -40,55 +49,56 @@ function EventList(auth){
         const Calendar = google.calendar({version:'v3', auth});
         let TimeCardTemplate = [];
         Calendar.events.list({
-          calendarId:'cbrown199@west-mec.org',
+          calendarId:'cadebrown1776@gmail.com',
           timeMin:(new Date()).toISOString(),
           maxResults:10,
           singleEvents:true,
           orderBy:'startTime',
           key:KEY,
+          timeZone: 'America/Phoenix'
         },(err,res2)=>{
-                if(err)return console.log('The API returned an error:'+ err);
+                if(err){ console.log('The API returned an error:'+ err);}
                 const events = res2.data.items;
                 if(events.length){
                     if(events.length==1){console.log('Upcoming event:');
                     events.map((event, i)=>{
                         const start = event.start.dateTime||event.start.date;
-                        console.log(`${start}-${event.summary}`);
-                        console.log(`Event Location:${event.location}`);
-                        console.log(`Event Summary:${event.summary}`);
-                        console.log(`Event Description:${event.description}`);
-                        console.log(`Event Date/time${event.start.dateTime}`);
-                        console.log(`Event ID${event.id}\n------------------------------------------------------`);
-                        StoredEventTitle.push(event.summary);
-                        StoredEventDescription.push(event.description);
-                        StoredEventDate.push(event.start.dateTime.slice(0,10)); 
-                        StoredEventLocation.push(event.location);
-                        StoredEventId.push(event.id);
-                        StoredEventStart.push(event.start.dateTime.slice(11,18));
-                        StoredEventEnd.push(event.start.dateTime.slice(20,25));
-                        eventAmount++;
-                        console.log(eventAmount);
-                      });}
-                    else if(events.length >=1){console.log('Upcoming '+events.length+' events:');
-                    events.map((event, i)=>{
-                        const start = event.start.dateTime||event.start.date;
-                        console.log(`${start}-${event.summary}`);
-                        console.log(`Event Location:${event.location}`);
-                        console.log(`Event Summary:${event.summary}`);
-                        console.log(`Event Description:${event.description}`);
-                        console.log(`Event Date/time${event.start.dateTime}`);
-                        console.log(`Event ID${event.id}\n------------------------------------------------------`);
-                        console.log(event.start.dateTime)
+                        // console.log(`${start}-${event.summary}`);
+                        // console.log(`Event Location:${event.location}`);
+                        // console.log(`Event Summary:${event.summary}`);
+                        // console.log(`Event Description:${event.description}`);
+                        // console.log(`Event Date/time${event.start.dateTime}`);
+                        // console.log(`Event End${event.end.dateTime}`)
+                        // console.log(`Event ID${event.id}\n------------------------------------------------------`);
                         StoredEventTitle.push(event.summary);
                         StoredEventDescription.push(event.description);
                         StoredEventDate.push(event.start.dateTime.slice(0,10)); 
                         StoredEventLocation.push(event.location);
                         StoredEventId.push(event.id);
                         StoredEventStart.push(event.start.dateTime.slice(11,19));
-                        StoredEventEnd.push(event.start.dateTime.slice(20,25));
+                        StoredEventEnd.push(event.end.dateTime.slice(11,19));
                         eventAmount++;
                         console.log(eventAmount);
-
+                      });}
+                    else if(events.length >=1){console.log('Upcoming '+events.length+' events:');
+                    events.map((event, i)=>{
+                        const start = event.start.dateTime||event.start.date;
+                        // console.log(`${start}-${event.summary}`);
+                        // console.log(`Event Location:${event.location}`);
+                        // console.log(`Event Summary:${event.summary}`);
+                        // console.log(`Event Description:${event.description}`);
+                        // console.log(`Event Date/time${event.start.dateTime}`);
+                        // console.log(`Event ID${event.id}\n------------------------------------------------------`);
+                        // console.log(event.start.dateTime)
+                        StoredEventTitle.push(event.summary);
+                        StoredEventDescription.push(event.description);
+                        StoredEventDate.push(event.start.dateTime.slice(0,10)); 
+                        StoredEventLocation.push(event.location);
+                        StoredEventId.push(event.id);
+                        StoredEventStart.push(event.start.dateTime.slice(11,19));
+                        StoredEventEnd.push(event.end.dateTime.slice(11,19));
+                        eventAmount++;
+                        console.log(eventAmount);
                       });}
                       for(let i=0; i<=eventAmount-1;i++){
                         if(eventAmount!=1){
@@ -114,8 +124,17 @@ function EventList(auth){
             // });})
 }         
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
+   _____                _         ______               _       
+  / ____|              | |       |  ____|             | |      
+ | |     _ __ ___  __ _| |_ ___  | |____   _____ _ __ | |_ ___ 
+ | |    | '__/ _ \/ _` | __/ _ \ |  __\ \ / / _ \ '_ \| __/ __|
+ | |____| | |  __/ (_| | ||  __/ | |___\ V /  __/ | | | |_\__ \
+  \_____|_|  \___|\__,_|\__\___| |______\_/ \___|_| |_|\__|___/
+*/
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Creates a new event            
-async function CreateEvent(auth,EventSummary,EventLocation,EventDescription,EventDate,StartTime,EndTime){
+async function CreateEvent(auth,EventSummary = "No Summary given",EventLocation = "No location given",EventDescription = "No location given",EventDate = new Date().toISOString(),StartTime = "00:00:00",EndTime = "00:00"){
     try{const accessToken = await oAuth2Client.getAccessToken();
       //Variables that are connected to the website
       var Event = {
@@ -123,15 +142,15 @@ async function CreateEvent(auth,EventSummary,EventLocation,EventDescription,Even
         'location': `${EventLocation}`,
         'description': `${EventDescription}`,
         'start': {
-          'dateTime':`${EventDate}T${StartTime}:00-${EndTime}:00`,
+          'dateTime':`${EventDate}T${StartTime}:00-${StartTime}`,
           'timeZone': 'America/Phoenix'},
-        'end':{
-          'dateTime':`${EventDate}T${StartTime}:00-${EndTime}:00`,
-          'timeZone':'America/Phoenix'}
-      }
+        'end': {
+            'dateTime':`${EventDate}T${EndTime}:00-${EndTime}`,
+            'timeZone': 'America/Phoenix'},
+        }
         const Calendar = google.calendar({version:'v3', auth});
         Calendar.events.insert({
-            calendarId:'cbrown199@west-mec.org',
+            calendarId:'cadebrown1776@gmail.com',
             key:KEY,
             resource: Event
         },function(err, event){
@@ -146,13 +165,12 @@ async function DeleteEvent(auth){
   try{const accessToken = await oAuth2Client.getAccessToken
       const Calendar = google.calendar({version:'v3', auth});
       Calendar.events.delete({
-          calendarId:'cbrown199@west-mec.org',
+          calendarId:'cadebrown1776@gmail.com',
           key:KEY,
       })
   }
   catch(error){return error;}}
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 // CreateEvent(oAuth2Client);EventList(oAuth2Client);
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

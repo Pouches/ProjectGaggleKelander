@@ -5,17 +5,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const CalendarUsage = require('./website/main');//contains all the Google apis and function to access them
 const { calendar } = require('googleapis/build/src/apis/calendar');
-const port=3000;
+const port=80;
 const hostname='127.0.0.1';
-const tom2 = 'hello Im the lesser tom';
 ////----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Creates a HTTP server
 const app = express();
 app.use(express.static(`${__dirname}/website`));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
-console.log('tom');
-console.log(tom2);
 app.get('/website/index.html', function(req,res){
   //This is what you had wanted to look at
   fs.readFile('/website/index.html',(err,data)=>{
@@ -23,7 +20,7 @@ app.get('/website/index.html', function(req,res){
     CalendarUsage.EventList(CalendarUsage.oAuth2Client);
   });
   res.end();
-  console.log(tom2);
+
 })
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //10 seconds delay between checks of the Calendar event list 

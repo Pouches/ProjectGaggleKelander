@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Pouches/ProjectGaggleKelander#readme",
   "dependencies": {
+    "all": "0.0.0",
     "express": "^4.17.1",
     "googleapis": "^67.1.1",
     "jsdom": "^16.5.0",

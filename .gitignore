@@ -2,3 +2,5 @@
 node_modules/
 #the keys
 keys/creds.json
+#login info
+keys/users.json

@@ -4,10 +4,11 @@
         <title>Cade's Custom Calendar</title>
         <link rel="stylesheet" href="CSS/good_style.css">
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="website.js"></script>
         <script>
             let eventInfo =[];
          $(document).ready(function(){
+             function RefreshEvents(){
+                document.body.getElementsByTagName("tbody")[0].innerHTML = '';
              $.getJSON("events.json",function(data){
                  eventInfo = data;
                  if(eventInfo.events.length==1){
@@ -16,8 +17,6 @@
                  else {
                     let i2=0;
                     eventInfo.events.forEach(element => {
-                        
-                        
                             let tr = document.createElement("tr");
                             document.getElementsByTagName("tbody")[0].append(tr);
                             let SumText = document.createTextNode(`${eventInfo.events[i2].summary}`);
@@ -46,11 +45,14 @@
                  }
              }).fail(function(){
                  console.log("an error has occured");
-             });
-         })
+             });}
+             RefreshEvents();
+             setInterval(RefreshEvents, 10000);
+            });        
          </script>
     </head>
-    <body onload="loadJSON()">
+    <body >
+        
         <div>
             <form id="newEventSection" method="POST" action="/create_event">
                 <input type='text' id='newEventTitle' placeholder="Event Title" name="newEventTitle"required>
